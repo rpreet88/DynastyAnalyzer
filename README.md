@@ -121,6 +121,49 @@ GET /leagues/{league_id}/rosters
   }
   ```
 
+#### 3. Get Player Information
+Retrieves detailed information about specific players by their IDs.
+
+```
+POST /players
+```
+
+**Request Body**
+```json
+{
+  "player_ids": ["1234", "5678"]
+}
+```
+
+**Response**
+```json
+{
+  "1234": {
+    "name": "Patrick Mahomes",
+    "position": "QB",
+    "team": "KC",
+    "number": "15",
+    "status": "Active",
+    "experience": 6,
+    "age": 29
+  },
+  "5678": {
+    "name": "Justin Jefferson",
+    "position": "WR",
+    "team": "MIN",
+    "number": "18",
+    "status": "Active",
+    "experience": 3,
+    "age": 25
+  }
+}
+```
+
+**Notes**
+- The endpoint returns player information from Sleeper's API with additional calculated fields like age
+- Player data is cached for 24 hours to improve performance
+- If a player ID is not found, it will be omitted from the response
+
 ## Setup Instructions
 
 ### Backend
