@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Union
+from pydantic import BaseModel
 
 from app.services import sleeper_api
 
@@ -34,3 +35,15 @@ async def get_league_rosters(league_id: str):
     if league_data is None:
         raise HTTPException(status_code=404, detail="League not found")
     return league_data
+
+class PlayerRequest(BaseModel):
+    player_ids: List[str]
+
+@app.post("/players", response_model=Dict[str, Dict])
+async def get_players(request: PlayerRequest):
+    """Get player information for a list of player IDs"""
+    try:
+        players = await sleeper_api.get_players(request.player_ids)
+        return players or {}
+    except Exception:
+        return {}
